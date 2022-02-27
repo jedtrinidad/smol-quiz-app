@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue';
 import API_URL, { endpoints } from '../constants';
 
 const { trivia_categories } = await fetch(`${API_URL}/${endpoints.CATEGORY}`)
@@ -8,19 +9,22 @@ const { trivia_categories } = await fetch(`${API_URL}/${endpoints.CATEGORY}`)
   .catch(e => {
     throw e
   })
+
+const selectedCategory = ref(trivia_categories[0].id);
 </script>
 
 <template>
   <div id="selector-window" class="nes-container with-title">
     <p class="title">Select Category</p>
     <div class="nes-select">
-      <select id="category-selector">
+      <select name="category" id="category-selector" v-model="selectedCategory">
         <option v-for="(category, index) in trivia_categories" :value="category.id" :key="index">
         {{ category.name }}
         </option>
       </select>
     </div>
-    <button class="nes-btn is-primary">PLAY</button>
+    <button class="nes-btn is-primary" 
+      @click="$emit('categorySelected', selectedCategory)">PLAY</button>
   </div>
 </template>
 

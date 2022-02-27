@@ -7,6 +7,10 @@ onErrorCaptured(e => {
   error.value = e;
   return true
 });
+
+const categorySelectedHandler = (id) => {
+  console.log(id)
+};
 </script>
 
 <template>
@@ -15,7 +19,7 @@ onErrorCaptured(e => {
 
   <Suspense>
     <template #default>
-      <CategorySelector/>
+      <CategorySelector @category-selected="categorySelectedHandler"/>
     </template>
     <template #fallback>
       <div v-if="error" class="nes-container">{{ error }}</div>
