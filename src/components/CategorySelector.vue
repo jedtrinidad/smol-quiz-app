@@ -14,7 +14,7 @@ const selectedCategory = ref(trivia_categories[0].id);
 </script>
 
 <template>
-  <div id="selector-window" class="nes-container with-title">
+  <div class="nes-container with-title">
     <p class="title">Select Category</p>
     <div class="nes-select">
       <select name="category" id="category-selector" v-model="selectedCategory">
