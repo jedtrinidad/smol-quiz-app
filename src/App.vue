@@ -17,15 +17,17 @@ const categorySelectedHandler = (id) => {
   <h1 class="nes-text">smol quiz app</h1>
   <img class="nes-avatar is-large" src="./assets/logo.png" style="image-rendering: pixelated;">
 
-  <Suspense>
-    <template #default>
-      <CategorySelector @category-selected="categorySelectedHandler"/>
-    </template>
-    <template #fallback>
-      <div v-if="error" class="nes-container">{{ error }}</div>
-      <h3 v-else class="nes-text">Loading...</h3>
-    </template>
-  </Suspense>
+  <div class="container">
+    <Suspense>
+      <template #default>
+        <CategorySelector @category-selected="categorySelectedHandler"/>
+      </template>
+      <template #fallback>
+        <div v-if="error" class="nes-container">{{ error }}</div>
+        <h3 v-else class="nes-text">Loading...</h3>
+      </template>
+    </Suspense>
+  </div>
 </template>
 
 <style>
@@ -36,5 +38,10 @@ const categorySelectedHandler = (id) => {
   margin-top: 0.5em;
   margin-left: 1.5em;
   margin-right: 1.5em;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
 }
 </style>
