@@ -1,30 +1,43 @@
-<script setup>
+<script>
 import { ref } from 'vue';
 import API_URL, { endpoints } from '../constants';
+import { useQuizStore } from '../stores/quiz';
+import { storeToRefs } from 'pinia';
 
-const { trivia_categories } = await fetch(`${API_URL}/${endpoints.CATEGORY}`)
-  .then(data => {
-    return data.json()
-  })
-  .catch(e => {
-    throw e
-  })
+export default {
+  async setup() {
+    const quizStore = useQuizStore();
+    const { categoryId } = storeToRefs(quizStore);
 
-const selectedCategory = ref(trivia_categories[0].id);
+    const { trivia_categories } = await fetch(`${API_URL}/${endpoints.CATEGORY}`)
+      .then(data => {
+        return data.json()
+      })
+      .catch(e => {
+        throw e
+      })
+
+    return {
+      trivia_categories,
+      categoryId
+    }
+  }
+}
 </script>
 
 <template>
   <div class="nes-container with-title">
     <p class="title">Select Category</p>
     <div class="nes-select">
-      <select name="category" id="category-selector" v-model="selectedCategory">
-        <option v-for="(category, index) in trivia_categories" :value="category.id" :key="index">
-        {{ category.name }}
-        </option>
+      <select name="category" id="category-selector" v-model="categoryId">
+        <option
+          v-for="(category, index) in trivia_categories"
+          :value="category.id"
+          :key="index"
+        >{{ category.name }}</option>
       </select>
     </div>
-    <button class="nes-btn is-primary" 
-      @click="$emit('categorySelected', selectedCategory)">PLAY</button>
+    <button class="nes-btn is-primary" @click="$emit('categorySelected')">PLAY</button>
   </div>
 </template>
 
