@@ -22,11 +22,18 @@ export default {
       });
     };
 
+    const resetGame = () => {
+      quizStore.$patch((state) => {
+        state.isPlaying = false
+      });
+    };
+
     return {
       trivia_categories,
       categoryId,
       isPlaying,
-      startPlaying
+      startPlaying,
+      resetGame
     }
   }
 }
@@ -44,7 +51,10 @@ export default {
         >{{ category.name }}</option>
       </select>
     </div>
-    <button class="nes-btn is-primary" @click="startPlaying">PLAY</button>
+    <div class="button-group">
+      <button class="nes-btn" :class="[isPlaying ? 'is-disabled' : 'is-primary']" @click="startPlaying">PLAY</button>
+      <button class="nes-btn is-danger" v-if="isPlaying" @click="resetGame">RESET</button>
+    </div>
   </div>
 </template>
 
@@ -55,5 +65,9 @@ export default {
 }
 .nes-select {
   margin-bottom: 20px;
+}
+.button-group {
+  display: flex;
+  gap: 10px;
 }
 </style>
