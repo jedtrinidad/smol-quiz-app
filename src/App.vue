@@ -1,16 +1,13 @@
 <script setup>
 import { onErrorCaptured, ref } from 'vue';
 import CategorySelector from './components/CategorySelector.vue';
+import Quiz from './components/Quiz.vue';
 
 const error = ref(null);
 onErrorCaptured(e => {
   error.value = e;
   return true
 });
-
-const categorySelectedHandler = (id) => {
-  console.log(id)
-};
 </script>
 
 <template>
@@ -20,7 +17,10 @@ const categorySelectedHandler = (id) => {
   <div class="container">
     <Suspense>
       <template #default>
-        <CategorySelector @category-selected="categorySelectedHandler"/>
+        <div>
+          <category-selector/>
+          <quiz/>
+        </div>
       </template>
       <template #fallback>
         <div v-if="error" class="nes-container">{{ error }}</div>
