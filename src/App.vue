@@ -1,7 +1,6 @@
 <script setup>
 import { onErrorCaptured, ref } from 'vue';
-import CategorySelector from './components/CategorySelector.vue';
-import Quiz from './components/Quiz.vue';
+import SetupGame from './components/SetupGame.vue';
 
 const error = ref(null);
 onErrorCaptured(e => {
@@ -16,12 +15,7 @@ onErrorCaptured(e => {
 
   <div class="container">
     <Suspense>
-      <template #default>
-        <div>
-          <category-selector/>
-          <quiz/>
-        </div>
-      </template>
+      <SetupGame/>
       <template #fallback>
         <div v-if="error" class="nes-container">{{ error }}</div>
         <h3 v-else class="nes-text">Loading...</h3>
@@ -34,7 +28,6 @@ onErrorCaptured(e => {
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 #app {
-  text-align: center;
   margin-top: 0.5em;
   margin-left: 1.5em;
   margin-right: 1.5em;
@@ -43,5 +36,6 @@ onErrorCaptured(e => {
 .container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 </style>

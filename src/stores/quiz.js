@@ -4,7 +4,8 @@ export const useQuizStore = defineStore('quiz', {
   state: () => {
     return {
       categoryId: 9,
-      isPlaying: false
+      questionsAmount: 10,
+      isPlaying: false,
     }
   }
 });

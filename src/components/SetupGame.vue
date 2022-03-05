@@ -6,7 +6,7 @@ import { storeToRefs } from 'pinia';
 export default {
   async setup() {
     const quizStore = useQuizStore();
-    const { categoryId, isPlaying } = storeToRefs(quizStore);
+    const { categoryId, isPlaying, questionsAmount } = storeToRefs(quizStore);
 
     const { trivia_categories } = await fetch(`${API_URL}/${endpoints.CATEGORY}`)
       .then(data => {
@@ -32,6 +32,7 @@ export default {
       trivia_categories,
       categoryId,
       isPlaying,
+      questionsAmount,
       startPlaying,
       resetGame
     }
@@ -41,16 +42,26 @@ export default {
 
 <template>
   <div class="nes-container with-title">
-    <p class="title">Select Category</p>
-    <div class="nes-select">
-      <select name="category" id="category-selector" v-model="categoryId" :disabled="isPlaying">
-        <option
-          v-for="(category, index) in trivia_categories"
-          :value="category.id"
-          :key="index"
-        >{{ category.name }}</option>
-      </select>
+    <p class="title">Setup Game</p>
+
+    <div class="nes-field">
+      <label for="category-selector">Select a Category</label>
+      <div class="nes-select">
+        <select name="category" id="category-selector" v-model="categoryId" :disabled="isPlaying">
+          <option
+            v-for="(category, index) in trivia_categories"
+            :value="category.id"
+            :key="index"
+          >{{ category.name }}</option>
+        </select>
+      </div>
     </div>
+
+    <div class="nes-field">
+      <label for="question-amount">Number of Questions</label>
+      <input type="number" v-model="questionsAmount" id="question-amount" class="nes-input" :disabled="isPlaying">
+    </div>
+
     <div class="button-group">
       <button class="nes-btn" :class="[isPlaying ? 'is-disabled' : 'is-primary']" @click="startPlaying">PLAY</button>
       <button class="nes-btn is-danger" v-if="isPlaying" @click="resetGame">RESET</button>
@@ -63,11 +74,9 @@ export default {
   text-align: start;
   margin-top: 8em;
 }
-.nes-select {
-  margin-bottom: 20px;
-}
 .button-group {
   display: flex;
   gap: 10px;
+  margin-top: 20px;
 }
 </style>
