@@ -52,7 +52,7 @@ export default {
     <p class="title" v-else>Quiz</p>
     <!-- Body -->
     <p v-if="questions.length > 0">
-      {{ questions[questionsIndex].question }}
+      <div v-html="questions[questionsIndex].question"></div>
       <label v-for="answers in questions[questionsIndex].options">
         <input type="radio" class="nes-radio" name="answer" id="answer" :value="answers">
         <span>{{ answers }}</span>
