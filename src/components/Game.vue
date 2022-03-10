@@ -11,6 +11,17 @@ export default {
     const questions = ref([]);
     const questionsIndex = ref(0);
 
+    const currentAnswer = ref(null);
+
+    let shuffler = (arr) => {
+      for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [arr[i],arr[j]] = [arr[j],arr[i]];
+      }
+
+      return arr;
+    };
+
     let getQuestions = async () => {
       try {
         let response = await fetch(`${API_URL}/${endpoints.QUIZ}?category=${categoryId.value}&amount=${questionsAmount.value}`)
@@ -33,6 +44,8 @@ export default {
           _temp.options = [...prp.incorrect_answers, prp.correct_answer]
           _temp.type = prp.type;
 
+          _temp.options = shuffler(_temp.options);
+
           return _temp;
         })
       }
@@ -41,7 +54,7 @@ export default {
       }
     })
 
-    return { isPlaying, categoryId, questions, questionsIndex, questionsAmount }
+    return { isPlaying, categoryId, questions, questionsIndex, questionsAmount, currentAnswer }
   }
 }
 </script>
@@ -54,8 +67,8 @@ export default {
     <p v-if="questions.length > 0">
       <div v-html="questions[questionsIndex].question"></div>
       <label v-for="answers in questions[questionsIndex].options">
-        <input type="radio" class="nes-radio" name="answer" id="answer" :value="answers">
-        <span>{{ answers }}</span>
+        <input type="radio" class="nes-radio" name="answer" id="answer" :value="answers" v-model="currentAnswer">
+        <span v-html="answers"></span>
       </label>
     </p>
     <p v-else>Waiting for Questions...</p>
@@ -68,5 +81,6 @@ export default {
 <style scoped>
 .nes-container {
   margin-top: 2.5em;
+  max-width: 600px;
 }
 </style>
