@@ -13,10 +13,10 @@ export default {
 
     const currentAnswer = ref(null);
 
-    let shuffler = (arr) => {
-      for (let i = arr.length - 1; i > 0; i--) {
+    let shuffler = (arr, n) => {
+      for (let i = n - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
-        [arr[i],arr[j]] = [arr[j],arr[i]];
+        [arr[i], arr[j]] = [arr[j], arr[i]];
       }
 
       return arr;
@@ -44,7 +44,7 @@ export default {
           _temp.options = [...prp.incorrect_answers, prp.correct_answer]
           _temp.type = prp.type;
 
-          _temp.options = shuffler(_temp.options);
+          _temp.options = shuffler(_temp.options, _temp.options.length);
 
           return _temp;
         })
@@ -54,25 +54,50 @@ export default {
       }
     })
 
-    return { isPlaying, categoryId, questions, questionsIndex, questionsAmount, currentAnswer }
+    const answerQuestion = () => {
+      if (questionsIndex.value !== questionsAmount.value) {
+        questionsIndex.value++;
+      }
+      else {
+        isPlaying.value = false;
+      }
+    };
+
+    return { isPlaying, categoryId, questions, questionsIndex, questionsAmount, currentAnswer, answerQuestion }
   }
 }
 </script>
 
 <template>
-  <div class="nes-container with-title" v-if="isPlaying">
-    <p class="title" v-if="questions.length > 0">Question {{ questionsIndex + 1 }} / {{ questionsAmount }}</p>
+  <div v-if="isPlaying" class="nes-container with-title">
+    <p
+      class="title"
+      v-if="questions.length > 0"
+    >Question {{ questionsIndex + 1 }} / {{ questionsAmount }}</p>
     <p class="title" v-else>Quiz</p>
     <!-- Body -->
-    <p v-if="questions.length > 0">
+    <div v-if="questions.length > 0">
       <div v-html="questions[questionsIndex].question"></div>
-      <label v-for="answers in questions[questionsIndex].options">
-        <input type="radio" class="nes-radio" name="answer" id="answer" :value="answers" v-model="currentAnswer">
-        <span v-html="answers"></span>
-      </label>
-    </p>
+      <ul class="answers-list">
+        <li v-for="answers in questions[questionsIndex].options">
+          <label>
+            <input
+              type="radio"
+              class="nes-radio"
+              name="answer"
+              id="answer"
+              :value="answers"
+              v-model="currentAnswer"
+            />
+            <span v-html="answers"></span>
+          </label>
+        </li>
+      </ul>
+      <button class="nes-btn" @click="answerQuestion">ANSWER</button>
+    </div>
     <p v-else>Waiting for Questions...</p>
   </div>
+
   <div class="nes-container is-dark" v-else>
     <p>Setup Your Game First!</p>
   </div>
@@ -82,5 +107,8 @@ export default {
 .nes-container {
   margin-top: 2.5em;
   max-width: 600px;
+}
+.answers-list {
+  list-style-type: none;
 }
 </style>
