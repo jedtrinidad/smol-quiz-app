@@ -73,6 +73,7 @@ export default {
 .nes-container {
   text-align: start;
   margin-top: 8em;
+  margin-bottom: 2.5em;
 }
 .button-group {
   display: flex;

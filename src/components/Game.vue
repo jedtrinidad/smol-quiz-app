@@ -55,11 +55,11 @@ export default {
     })
 
     const answerQuestion = () => {
-      if (questionsIndex.value !== questionsAmount.value) {
-        questionsIndex.value++;
+      if (questionsIndex.value === questionsAmount.value) {
+        isPlaying.value = false;
       }
       else {
-        isPlaying.value = false;
+        questionsIndex.value++;
       }
     };
 
@@ -73,7 +73,7 @@ export default {
     <p
       class="title"
       v-if="questions.length > 0"
-    >Question {{ questionsIndex + 1 }} / {{ questionsAmount }}</p>
+    >Question {{ questionsIndex }} / {{ questionsAmount }}</p>
     <p class="title" v-else>Quiz</p>
     <!-- Body -->
     <div v-if="questions.length > 0">
@@ -105,8 +105,7 @@ export default {
 
 <style scoped>
 .nes-container {
-  margin-top: 2.5em;
-  max-width: 600px;
+  min-width: 600px;
 }
 .answers-list {
   list-style-type: none;
