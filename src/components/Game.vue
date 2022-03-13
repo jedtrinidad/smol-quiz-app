@@ -12,6 +12,7 @@ export default {
     const questionsIndex = ref(0);
 
     const currentAnswer = ref(null);
+    const currentQuestion = ref(null);
 
     let shuffler = (arr, n) => {
       for (let i = n - 1; i > 0; i--) {
@@ -48,6 +49,8 @@ export default {
 
           return _temp;
         })
+
+        currentQuestion.value = questions.value.pop();
       }
       else {
         questions.value = [];
@@ -55,15 +58,10 @@ export default {
     })
 
     const answerQuestion = () => {
-      if (questionsIndex.value === questionsAmount.value) {
-        isPlaying.value = false;
-      }
-      else {
-        questionsIndex.value++;
-      }
+      currentQuestion.value = questions.value.pop();
     };
 
-    return { isPlaying, categoryId, questions, questionsIndex, questionsAmount, currentAnswer, answerQuestion }
+    return { isPlaying, questions, currentQuestion, currentAnswer, answerQuestion }
   }
 }
 </script>
@@ -73,13 +71,13 @@ export default {
     <p
       class="title"
       v-if="questions.length > 0"
-    >Question {{ questionsIndex }} / {{ questionsAmount }}</p>
+    >Question</p>
     <p class="title" v-else>Quiz</p>
     <!-- Body -->
     <div v-if="questions.length > 0">
-      <div v-html="questions[questionsIndex].question"></div>
+      <div v-html="currentQuestion.question"></div>
       <ul class="answers-list">
-        <li v-for="answers in questions[questionsIndex].options">
+        <li v-for="answers in currentQuestion.options">
           <label>
             <input
               type="radio"
