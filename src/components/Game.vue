@@ -8,11 +8,11 @@ export default {
   async setup() {
     const quizStore = useQuizStore();
     const { isPlaying, categoryId, questionsAmount } = storeToRefs(quizStore);
-    const questions = ref([]);
-    const questionsIndex = ref(0);
 
+    const questions = ref([]);
     const currentAnswer = ref(null);
     const currentQuestion = ref(null);
+    const score = ref(0);
 
     let shuffler = (arr, n) => {
       for (let i = n - 1; i > 0; i--) {
@@ -42,6 +42,7 @@ export default {
           _temp.category = prp.category;
           _temp.question = prp.question;
           _temp.difficulty = prp.difficulty;
+          _temp.correct_answer = prp.correct_answer;
           _temp.options = [...prp.incorrect_answers, prp.correct_answer]
           _temp.type = prp.type;
 
@@ -59,22 +60,27 @@ export default {
 
     const answerQuestion = () => {
       currentQuestion.value = questions.value.pop();
+      currentAnswer.value = currentQuestion.value.options[0];
+
+      if (currentQuestion.value.correct_answer === currentAnswer.value) {
+        score.value++;
+      }
+
+      if (questions.value.length === 0) {
+        isPlaying.value = false;
+      }
     };
 
-    return { isPlaying, questions, currentQuestion, currentAnswer, answerQuestion }
+    return { isPlaying, score, currentQuestion, currentAnswer, answerQuestion }
   }
 }
 </script>
 
 <template>
   <div v-if="isPlaying" class="nes-container with-title">
-    <p
-      class="title"
-      v-if="questions.length > 0"
-    >Question</p>
-    <p class="title" v-else>Quiz</p>
+    <p class="title">Score:{{ score }}</p>
     <!-- Body -->
-    <div v-if="questions.length > 0">
+    <div v-if="currentQuestion !== null">
       <div v-html="currentQuestion.question"></div>
       <ul class="answers-list">
         <li v-for="answers in currentQuestion.options">

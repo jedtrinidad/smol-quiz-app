@@ -18,10 +18,10 @@ onErrorCaptured(e => {
     <template #default>
       <div>
         <div class="container">
-          <SetupGame />
+          <Game />
         </div>
         <div class="container">
-          <Game />
+          <SetupGame />
         </div>
       </div>
     </template>
