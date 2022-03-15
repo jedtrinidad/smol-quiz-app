@@ -7,12 +7,11 @@ import { useQuizStore } from "../stores/quiz"
 export default {
   async setup() {
     const quizStore = useQuizStore();
-    const { isPlaying, categoryId, questionsAmount } = storeToRefs(quizStore);
+    const { isPlaying, categoryId, questionsAmount, score } = storeToRefs(quizStore);
 
     const questions = ref([]);
     const currentAnswer = ref(null);
     const currentQuestion = ref(null);
-    const score = ref(0);
 
     let shuffler = (arr, n) => {
       for (let i = n - 1; i > 0; i--) {
@@ -55,6 +54,9 @@ export default {
       }
       else {
         questions.value = [];
+        currentAnswer.value = null;
+        currentQuestion.value = null;
+        state.score = 0;
       }
     })
 

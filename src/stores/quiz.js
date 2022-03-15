@@ -6,6 +6,7 @@ export const useQuizStore = defineStore('quiz', {
       categoryId: 9,
       questionsAmount: 10,
       isPlaying: false,
+      score: 0,
     }
   }
 });

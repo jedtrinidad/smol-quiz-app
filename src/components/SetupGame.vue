@@ -25,6 +25,7 @@ export default {
     const resetGame = () => {
       quizStore.$patch((state) => {
         state.isPlaying = false
+        state.score = 0;
       });
     };
 
