@@ -2,11 +2,13 @@
 import { storeToRefs } from "pinia"
 import { ref } from "vue";
 import API_URL, { endpoints } from "../constants";
-import { useQuizStore } from "../stores/quiz"
+import { useQuizStore } from "../stores/quiz";
+import { useScoresStore } from "../stores/scores";
 
 export default {
   async setup() {
     const quizStore = useQuizStore();
+    const scoresStore = useScoresStore();
     const { isPlaying, categoryId, questionsAmount, score } = storeToRefs(quizStore);
 
     const questions = ref([]);
@@ -56,6 +58,8 @@ export default {
         questions.value = [];
         currentAnswer.value = null;
         currentQuestion.value = null;
+        scoresStore.addScore(state.score);
+
         state.score = 0;
       }
     })
