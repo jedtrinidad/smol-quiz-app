@@ -1,6 +1,6 @@
 <script>
 import { storeToRefs } from "pinia"
-import { onMounted, onUnmounted, ref } from "vue";
+import { onBeforeUnmount, ref } from "vue";
 import API_URL, { endpoints } from "../constants";
 import { useQuizStore } from "../stores/quiz";
 import { useScoresStore } from "../stores/scores";
@@ -14,6 +14,13 @@ export default {
     const questions = ref([]);
     const currentAnswer = ref(null);
     const currentQuestion = ref(null);
+
+    onBeforeUnmount(() => {
+      questions.value = [];
+      currentAnswer.value = null;
+      currentQuestion.value = null;
+      score.value = 0;
+    });
 
     let shuffler = (arr, n) => {
       for (let i = n - 1; i > 0; i--) {
@@ -50,13 +57,6 @@ export default {
     };
 
     await getQuestions();
-
-    onUnmounted(() => {
-      questions.value = [];
-      currentAnswer.value = null;
-      currentQuestion.value = null;
-      state.score = 0;
-    })
 
     const answerQuestion = () => {
       currentQuestion.value = questions.value.pop();
