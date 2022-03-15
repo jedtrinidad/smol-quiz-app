@@ -1,6 +1,6 @@
 <script>
 import { storeToRefs } from "pinia"
-import { ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
 import API_URL, { endpoints } from "../constants";
 import { useQuizStore } from "../stores/quiz";
 import { useScoresStore } from "../stores/scores";
@@ -29,16 +29,7 @@ export default {
         let response = await fetch(`${API_URL}/${endpoints.QUIZ}?category=${categoryId.value}&amount=${questionsAmount.value}`)
         let { results } = await response.json();
 
-        return results;
-      } catch (error) {
-        throw error;
-      }
-    };
-
-    quizStore.$subscribe(async (mutation, state) => {
-      if (state.isPlaying) {
-        let _hold = await getQuestions();
-        questions.value = _hold.map(prp => {
+        questions.value = results.map(prp => {
           let _temp = new Object();
           _temp.category = prp.category;
           _temp.question = prp.question;
@@ -53,15 +44,18 @@ export default {
         })
 
         currentQuestion.value = questions.value.pop();
+      } catch (error) {
+        throw error;
       }
-      else {
-        questions.value = [];
-        currentAnswer.value = null;
-        currentQuestion.value = null;
-        scoresStore.addScore(state.score);
+    };
 
-        state.score = 0;
-      }
+    await getQuestions();
+
+    onUnmounted(() => {
+      questions.value = [];
+      currentAnswer.value = null;
+      currentQuestion.value = null;
+      state.score = 0;
     })
 
     const answerQuestion = () => {
@@ -83,7 +77,7 @@ export default {
 </script>
 
 <template>
-  <div v-if="isPlaying" class="nes-container with-title">
+  <div class="nes-container with-title">
     <p class="title">Score:{{ score }}</p>
     <!-- Body -->
     <div v-if="currentQuestion !== null">
@@ -106,10 +100,6 @@ export default {
       <button class="nes-btn" @click="answerQuestion">ANSWER</button>
     </div>
     <p v-else>Waiting for Questions...</p>
-  </div>
-
-  <div class="nes-container is-dark" v-else>
-    <p>Setup Your Game First!</p>
   </div>
 </template>
 
