@@ -109,7 +109,7 @@ export default {
 
 <style scoped>
 .nes-container {
-  min-width: 600px;
+  max-width: 600px;
 }
 .answers-list {
   list-style-type: none;
