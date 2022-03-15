@@ -2,6 +2,11 @@
 import { onErrorCaptured, ref } from 'vue';
 import SetupGame from './components/SetupGame.vue';
 import Game from './components/Game.vue';
+import { useQuizStore } from './stores/quiz';
+import { storeToRefs } from 'pinia';
+
+const quizStore = useQuizStore();
+const { isPlaying } = storeToRefs(quizStore);
 
 const error = ref(null);
 onErrorCaptured(e => {
@@ -18,7 +23,7 @@ onErrorCaptured(e => {
     <template #default>
       <div>
         <div class="container">
-          <Game />
+          <Game v-if="isPlaying"/>
         </div>
         <div class="container">
           <SetupGame />
