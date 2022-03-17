@@ -1,0 +1,22 @@
+<template>
+  <div class="nes-table-responsive">
+    <table class="nes-table is-centered is-bordered">
+      <thead>
+        <th>Score</th>
+        <th>Time</th>
+      </thead>
+      <tbody>
+        <tr v-for="score in scores">
+          <td>{{ score.score }}/{{ score.amount }}</td>
+          <td>{{ score.timestamp }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script setup>
+const props = defineProps({
+  scores: Array
+})
+</script>

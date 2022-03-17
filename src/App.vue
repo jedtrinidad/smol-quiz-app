@@ -5,6 +5,7 @@ import Game from './components/Game.vue';
 import { useQuizStore } from './stores/quiz';
 import { useScoresStore } from './stores/scores';
 import { storeToRefs } from 'pinia';
+import HighScoreDisplay from './components/HighScoreDisplay.vue';
 
 const quizStore = useQuizStore();
 const scoresStore = useScoresStore();
@@ -31,20 +32,7 @@ onErrorCaptured(e => {
         <div class="container">
           <SetupGame />
 
-          <div class="nes-table-responsive">
-            <table class="nes-table is-centered is-bordered">
-              <thead>
-                <th>Score</th>
-                <th>Time</th>
-              </thead>
-              <tbody>
-                <tr v-for="score in scores">
-                  <td>{{ score.score }}/{{ score.amount }}</td>
-                  <td>{{ score.timestamp }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <HighScoreDisplay :scores="scores"/>
         </div>
       </div>
     </template>
