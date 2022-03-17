@@ -1,6 +1,6 @@
 <script>
 import { storeToRefs } from "pinia"
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, reactive, ref, watch } from "vue";
 import API_URL, { endpoints } from "../constants";
 import { useQuizStore } from "../stores/quiz";
 import { useScoresStore } from "../stores/scores";
@@ -9,17 +9,30 @@ export default {
   async setup() {
     const quizStore = useQuizStore();
     const scoresStore = useScoresStore();
-    const { isPlaying, categoryId, questionsAmount, score } = storeToRefs(quizStore);
+    const { categoryId, questionsAmount, score, isPlaying } = storeToRefs(quizStore);
 
-    const questions = ref([]);
+    const questions = reactive([])
     const currentAnswer = ref(null);
     const currentQuestion = ref(null);
+    const counter = ref(1);
 
     onBeforeUnmount(() => {
       questions.value = [];
       currentAnswer.value = null;
       currentQuestion.value = null;
+
+      scoresStore.addScore({
+        score: score.value, 
+        amount: questionsAmount.value,
+        category: categoryId.value, 
+        timestamp: Date.now()
+      });
       score.value = 0;
+    });
+
+    watch(questions, (newQuestions, oldQuestions) => {
+      console.debug(newQuestions);
+      console.debug(oldQuestions);
     });
 
     let shuffler = (arr, n) => {
@@ -51,6 +64,7 @@ export default {
         })
 
         currentQuestion.value = questions.value.pop();
+        currentAnswer.value = currentQuestion.value.options[0];
       } catch (error) {
         throw error;
       }
@@ -59,47 +73,48 @@ export default {
     await getQuestions();
 
     const answerQuestion = () => {
-      currentQuestion.value = questions.value.pop();
-      currentAnswer.value = currentQuestion.value.options[0];
-
-      if (currentQuestion.value.correct_answer === currentAnswer.value) {
-        score.value++;
-      }
-
-      if (questions.value.length === 0) {
+      if (!questions.value.length) {
         isPlaying.value = false;
+      }
+      else {
+        if (currentQuestion.value.correct_answer === currentAnswer.value) {
+          score.value++;
+        }
+
+        currentQuestion.value = questions.value.pop();
+        currentAnswer.value = currentQuestion.value.options[0];
+        counter.value++;
       }
     };
 
-    return { isPlaying, score, currentQuestion, currentAnswer, answerQuestion }
+    return { score, currentQuestion, currentAnswer, answerQuestion, counter }
   }
 }
 </script>
 
 <template>
   <div class="nes-container with-title">
-    <p class="title">Score:{{ score }}</p>
+    <p class="title">[Question#{{ counter }}] Score:{{ score }}</p>
     <!-- Body -->
-    <div v-if="currentQuestion !== null">
+    <div>
       <div v-html="currentQuestion.question"></div>
       <ul class="answers-list">
-        <li v-for="answers in currentQuestion.options">
+        <li v-for="answer in currentQuestion.options">
           <label>
             <input
               type="radio"
               class="nes-radio"
               name="answer"
               id="answer"
-              :value="answers"
+              :value="answer"
               v-model="currentAnswer"
             />
-            <span v-html="answers"></span>
+            <span v-html="answer"></span>
           </label>
         </li>
       </ul>
       <button class="nes-btn" @click="answerQuestion">ANSWER</button>
     </div>
-    <p v-else>Waiting for Questions...</p>
   </div>
 </template>
 
