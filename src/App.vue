@@ -28,11 +28,10 @@ onErrorCaptured(e => {
       <div>
         <div class="container">
           <Game v-if="isPlaying"/>
+          <HighScoreDisplay v-else :scores="scores"/>
         </div>
         <div class="container">
           <SetupGame />
-
-          <HighScoreDisplay :scores="scores"/>
         </div>
       </div>
     </template>
