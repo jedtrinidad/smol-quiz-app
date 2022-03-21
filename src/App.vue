@@ -10,7 +10,7 @@ import HighScoreDisplay from './components/HighScoreDisplay.vue';
 const quizStore = useQuizStore();
 const scoresStore = useScoresStore();
 const { isPlaying } = storeToRefs(quizStore);
-const { scores } = storeToRefs(scoresStore);
+const { cookedScores } = storeToRefs(scoresStore);
 
 const error = ref(null);
 onErrorCaptured(e => {
@@ -28,7 +28,7 @@ onErrorCaptured(e => {
       <div>
         <div class="container">
           <Game v-if="isPlaying"/>
-          <HighScoreDisplay v-else :scores="scores"/>
+          <HighScoreDisplay v-else :scores="cookedScores"/>
         </div>
         <div class="container">
           <SetupGame />
