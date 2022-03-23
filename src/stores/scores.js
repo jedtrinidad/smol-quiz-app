@@ -8,7 +8,7 @@ export const useScoresStore = defineStore('scores', {
     }
   },
   actions: {
-    addScore() {
+    addScore(entry) {
       this.scores.push(entry);
     }
   },
