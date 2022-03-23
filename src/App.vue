@@ -3,14 +3,11 @@ import { onErrorCaptured, ref } from 'vue';
 import SetupGame from './components/SetupGame.vue';
 import Game from './components/Game.vue';
 import { useQuizStore } from './stores/quiz';
-import { useScoresStore } from './stores/scores';
 import { storeToRefs } from 'pinia';
-import HighScoreDisplay from './components/HighScoreDisplay.vue';
+import ScoreDialog from './components/ScoreDialog.vue';
 
 const quizStore = useQuizStore();
-const scoresStore = useScoresStore();
 const { isPlaying } = storeToRefs(quizStore);
-const { cookedScores } = storeToRefs(scoresStore);
 
 const error = ref(null);
 onErrorCaptured(e => {
@@ -28,10 +25,10 @@ onErrorCaptured(e => {
       <div>
         <div class="container">
           <Game v-if="isPlaying"/>
-          <HighScoreDisplay v-else :scores="cookedScores"/>
         </div>
         <div class="container">
           <SetupGame />
+          <ScoreDialog/>
         </div>
       </div>
     </template>
