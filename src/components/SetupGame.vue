@@ -60,7 +60,7 @@ export default {
 
     <div class="nes-field">
       <label for="question-amount">Number of Questions</label>
-      <input type="number" v-model="questionsAmount" id="question-amount" class="nes-input" :disabled="isPlaying">
+      <input type="number" min="0" max="100" v-model="questionsAmount" id="question-amount" class="nes-input" :disabled="isPlaying">
     </div>
 
     <div class="button-group">
