@@ -15,20 +15,20 @@ const { cookedScores } = storeToRefs(scoresStore);
 </script>
 
 <template>
-  <section>
-    <button class="nes-btn is-primary" @click="openDialog">SHOW SCORES</button>
-  </section>
+  <button class="nes-btn is-primary" @click="openDialog">SHOW SCORES</button>
   <Teleport to="body">
-    <dialog class="nes-dialog" ref="dialog">
-      <form method="dialog">
-        <p class="title">Scores</p>
-        <p>
-          <HighScoreDisplay :scores="cookedScores"/>
-        </p>
-        <menu class="dialog-menu">
-          <button class="nes-btn">Close</button>
-        </menu>
-      </form>
-    </dialog>
+    <section>
+      <dialog class="nes-dialog" ref="dialog">
+        <form method="dialog">
+          <p class="title">Scores</p>
+          <p>
+            <HighScoreDisplay :scores="cookedScores"/>
+          </p>
+          <menu class="dialog-menu">
+            <button class="nes-btn">Close</button>
+          </menu>
+        </form>
+      </dialog>
+    </section>
   </Teleport>
 </template>

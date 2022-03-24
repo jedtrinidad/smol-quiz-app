@@ -25,10 +25,10 @@ onErrorCaptured(e => {
       <div>
         <div class="container">
           <Game v-if="isPlaying"/>
+          <ScoreDialog v-else/>
         </div>
         <div class="container">
           <SetupGame />
-          <ScoreDialog/>
         </div>
       </div>
     </template>
