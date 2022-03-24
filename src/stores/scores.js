@@ -1,4 +1,4 @@
-import { useStorage } from "@vueuse/core";
+import { useStorage, useDateFormat } from "@vueuse/core";
 import { defineStore } from "pinia";
 
 export const useScoresStore = defineStore('scores', {
@@ -17,7 +17,7 @@ export const useScoresStore = defineStore('scores', {
       return {
         score: e.score,
         amount: e.amount,
-        timestamp: new Date(e.timestamp)
+        timestamp: useDateFormat(new Date(e.timestamp), 'YYYY/MM/DD H:mm').value
       }
     })
   }

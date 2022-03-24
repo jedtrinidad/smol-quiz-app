@@ -7,7 +7,7 @@
       </thead>
       <tbody>
         <tr v-for="score in scores">
-          <td>{{ score.score }}/{{ score.amount }}</td>
+          <td>{{ score.score }}/{{ score.amount }} Correct</td>
           <td>{{ score.timestamp }}</td>
         </tr>
       </tbody>
