@@ -24,8 +24,10 @@ onErrorCaptured(e => {
     <template #default>
       <div>
         <div class="container">
-          <Game v-if="isPlaying"/>
-          <ScoreDialog v-else/>
+          <Transition name="fade">
+            <Game v-if="isPlaying"/>
+            <ScoreDialog v-else/>
+          </Transition>
         </div>
         <div class="container">
           <SetupGame />
@@ -55,5 +57,15 @@ onErrorCaptured(e => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>
