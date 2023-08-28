@@ -17,8 +17,8 @@ onErrorCaptured(e => {
 </script>
 
 <template>
-  <h1 class="nes-text">smol quiz app</h1>
-  <img class="nes-avatar is-large" src="./assets/logo.png" style="image-rendering: pixelated;" />
+  <h1 class="nes-text text-is-centered">smol quiz app</h1>
+  <img class="nes-avatar is-large" id="logo" src="./assets/logo.png" style="image-rendering: pixelated;" />
 
   <Suspense>
     <template #default>
@@ -67,5 +67,15 @@ onErrorCaptured(e => {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.text-is-centered {
+  text-align: center;
+}
+
+#logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
