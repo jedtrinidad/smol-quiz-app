@@ -21,11 +21,10 @@ const { cookedScores } = storeToRefs(scoresStore);
       <dialog class="nes-dialog" ref="dialog">
         <form method="dialog">
           <p class="title">Scores</p>
-          <p>
-            <HighScoreDisplay :scores="cookedScores"/>
-          </p>
+          <HighScoreDisplay :scores="cookedScores" />
           <menu class="dialog-menu">
             <button class="nes-btn">Close</button>
+            <button class="nes-btn is-error" @click="scoresStore.resetScores">Reset</button>
           </menu>
         </form>
       </dialog>

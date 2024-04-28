@@ -30,7 +30,7 @@ onErrorCaptured(e => {
           </Transition>
         </div>
         <div class="container">
-          <SetupGame />
+          <SetupGame v-if="!isPlaying"/>
         </div>
       </div>
     </template>

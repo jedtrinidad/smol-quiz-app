@@ -10,6 +10,9 @@ export const useScoresStore = defineStore('scores', {
   actions: {
     addScore(entry) {
       this.scores.push(entry);
+    },
+    resetScores() {
+      this.scores = []
     }
   },
   getters: {
