@@ -24,7 +24,7 @@ const { cookedScores } = storeToRefs(scoresStore);
           <HighScoreDisplay :scores="cookedScores" />
           <menu class="dialog-menu">
             <button class="nes-btn">Close</button>
-            <button class="nes-btn is-error" @click="scoresStore.resetScores">Reset</button>
+            <button class="nes-btn is-error" @click="scoresStore.resetScores" .disabled="cookedScores.length < 0">Reset</button>
           </menu>
         </form>
       </dialog>
