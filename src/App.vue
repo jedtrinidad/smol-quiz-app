@@ -2,9 +2,9 @@
 import { onErrorCaptured, ref } from 'vue';
 import SetupGame from './components/SetupGame.vue';
 import Game from './components/Game.vue';
+import ScoreDialog from './components/ScoreDialog.vue';
 import { useQuizStore } from './stores/quiz';
 import { storeToRefs } from 'pinia';
-import ScoreDialog from './components/ScoreDialog.vue';
 
 const quizStore = useQuizStore();
 const { isPlaying } = storeToRefs(quizStore);
